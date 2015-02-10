@@ -3,6 +3,7 @@ import yahoo_finance
 import matplotlib.pyplot as plt
 from datetime import datetime, date, timedelta as td
 import random
+from mystocks import get_summary
 
 '''
 
@@ -16,6 +17,17 @@ JSON data file:
 	http://pastebin.com/index.php?e=1
 
 '''
+
+buy_watch_list = [\
+
+('CVX', 106),
+('HAL', 43),
+('IRBT', 29),
+('NBG', 1.1)
+
+]
+
+
 
 def get_data(location = '.'):
 	with open('{}/data.json'.format(location), 'rU') as f:
@@ -117,7 +129,8 @@ def main():
 	'graph [symbol] [yyyy-mm-dd <start date>] [yyyy-mm-dd<end_date> <optional, defaults to today>]\n\t\t -graphs a companies close price',\
 	'info [symbol] \n\t\t -prints out the current stock info',
 	'commands \n\t\t-prints this command list',\
-	'random \n\t\t-prints a random stocks info']
+	'random \n\t\t-prints a random stocks info',\
+	'mystocks \n\t\t-prints summary of portfolio']
 	for x in commands:
 		print "\t{}".format(x)
 	while True:
@@ -179,7 +192,13 @@ def main():
 					if k not in ['INFO']:
 						print '\t',k, v
 
-
+			elif c[0] == 'watch':
+				for stock in buy_watch_list:
+					share = yahoo_finance.Share(stock[0])
+					if float(share.get_price()) <= float(stock[1]):
+						print "BUY {} @ {}".format(stock[0], share.get_price())
+			elif c[0] == "mystocks":
+				get_summary()
 			else:
 				print "invalid command please try again"
 			print
