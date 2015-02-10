@@ -16,9 +16,12 @@ example:
 4. pick a random stock and show stats/meta data
 
     
-    search_name facebook
+    search_name facebook 
     info fb
     graph fb 2014-10-01 2015-02-09
     random
+    more fb
+
+
 
 example screenshot: http://imgur.com/MvX3Jb8

@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime, date, timedelta as td
 import random
 from mystocks import get_summary
+from stock_info import get_info
 
 '''
 
@@ -23,7 +24,10 @@ buy_watch_list = [\
 ('CVX', 106),
 ('HAL', 43),
 ('IRBT', 29),
-('NBG', 1.1)
+('NBG', 1.1),
+('YUM',70),
+('LXU', 30)
+
 
 ]
 
@@ -128,6 +132,7 @@ def main():
 	'search [company symbol]\n\t\t-searches comapnies by the symbol', \
 	'graph [symbol] [yyyy-mm-dd <start date>] [yyyy-mm-dd<end_date> <optional, defaults to today>]\n\t\t -graphs a companies close price',\
 	'info [symbol] \n\t\t -prints out the current stock info',
+	'more [symbol] \n\t\t -prints out company description and earnings stats',\
 	'commands \n\t\t-prints this command list',\
 	'random \n\t\t-prints a random stocks info',\
 	'mystocks \n\t\t-prints summary of portfolio']
@@ -179,6 +184,7 @@ def main():
 					print "Error: {}".format(e)
 					print "No results or error in your command, please try again"
 					pass
+
 			elif c[0] == 'commands':
 				for x in commands:
 					print "\t{}".format(x)
@@ -191,17 +197,36 @@ def main():
 				for k,v in info.items():
 					if k not in ['INFO']:
 						print '\t',k, v
+				if len(c) ==1:
+
+					plot_stock(r, '2014-06-01')
+				else:
+					plot_stock(r, c[1])
+
 
 			elif c[0] == 'watch':
 				for stock in buy_watch_list:
 					share = yahoo_finance.Share(stock[0])
 					if float(share.get_price()) <= float(stock[1]):
 						print "BUY {} @ {}".format(stock[0], share.get_price())
+
+
 			elif c[0] == "mystocks":
 				get_summary()
+			elif c[0] == 'more':
+				moreinfo = get_info(c[1])
+				print "COMPANY INFO"
+				print moreinfo['description']
+				print
+				print 'Stats'
+				for k, v in moreinfo.items():
+					if not k == "description":
+						print k, v
 			else:
 				print "invalid command please try again"
 			print
+
+
 
 		except Exception as e:
 			print "Error: {}".format(e)
