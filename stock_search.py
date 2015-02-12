@@ -212,8 +212,9 @@ def main():
 			elif c[0] == 'watch':
 				for stock in buy_watch_list:
 					share = yahoo_finance.Share(stock[0])
-					if float(share.get_price()) <= float(stock[1]):
-						print "BUY {} @ {}".format(stock[0], share.get_price())
+					p= share.get_price()
+					if float(p) <= float(stock[1]):
+						print "BUY {} @ {}".format(stock[0], p)
 
 
 			elif c[0] == "mystocks":
