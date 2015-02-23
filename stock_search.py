@@ -39,7 +39,7 @@ buy_watch_list = [\
 
 
 def get_data(location = '.'):
-	with open('{}/data.json'.format(location), 'rU') as f:
+	with open('{}/data2.json'.format(location), 'rU') as f:
 		data = json.load(f)
 	return data
 
@@ -237,5 +237,27 @@ def main():
 		except Exception as e:
 			print "Error: {}".format(e)
 			print "something fucked up"
-data = get_data()
-main()
+
+def update_prices():
+	data = get_data()
+	print data[0].keys()
+	data2 = []
+	
+	for x in data:
+		try:
+			s = yahoo_finance.Share(x['Symbol'])
+			x.update({'price': float(s.get_price())})
+			data2.append(x)
+			print '{} '.format(x['Symbol'])
+		except:
+			print 'error'
+
+	with open('data2.json', 'wb') as f:
+		j = json.dumps(data2)
+		print >> f, j
+def watch():
+	for stock in buy_watch_list:
+		share = yahoo_finance.Share(stock[0])
+		p= share.get_price()
+		if float(p) <= float(stock[1]):
+			print "BUY {} @ {}".format(stock[0], p)

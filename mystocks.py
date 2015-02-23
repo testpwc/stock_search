@@ -91,3 +91,8 @@ def get_summary():
 	p = Portfolio([x for x in csv.reader(open('mystocks.csv','rU'))])
 	p.summary()
 
+p = Portfolio([x for x in csv.reader(open('mystocks.csv','rU'))])
+p.summary()
+
+for x in p.stocks:
+	print x.shares, x.sym

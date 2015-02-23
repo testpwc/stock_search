@@ -21,3 +21,6 @@ def get_info(sym):
 
 
 
+for k, v in get_info('axp').items():
+	if not k == "description":
+		print k, v
